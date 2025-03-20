@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polla Mundialista</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <style>
+        body {
+            text-align: center;
+            padding: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-3">⚽ Polla Mundialista ⚽</h2>
+            <h3 class="subtitle is-4">Colombia vs Brasil</h3>
+            
+            <div class="is-flex is-justify-content-center">
+                <figure class="image is-96x96">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" alt="Bandera de Colombia">
+                </figure>
+                <figure class="image is-96x96 ml-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Bandera de Brasil">
+                </figure>
+            </div>
+
+            <div class="box mt-5">
+                <label class="label">Ingresa tu nombre</label>
+                <input type="text" id="nombre" class="input" placeholder="Tu nombre aquí">
+
+                <label class="label mt-3">Tu marcador asignado</label>
+                <p id="marcador" class="is-size-4 has-text-weight-bold hidden"></p>
+
+                <button id="participarBtn" class="button is-success mt-4" onclick="participar()">Participar</button>
+            </div>
+
+            <p id="mensaje" class="hidden notification is-success mt-3">
+                ✅ Por transparencia del juego envía el pantallazo al grupo de WhatsApp. Pronto te diremos la forma de pago de los 5.000 pesitos.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Función para generar un marcador aleatorio
+        function generarMarcador() {
+            const golesColombia = Math.floor(Math.random() * 5);
+            const golesBrasil = Math.floor(Math.random() * 5);
+            return `Colombia ${golesColombia} - Brasil ${golesBrasil}`;
+        }
+
+        // Función para guardar el marcador y nombre en el almacenamiento local
+        function guardarDatos(nombre, marcador) {
+            localStorage.setItem("nombreParticipante", nombre);
+            localStorage.setItem("marcadorAsignado", marcador);
+        }
+
+        // Función para obtener los datos guardados
+        function obtenerDatos() {
+            return {
+                nombre: localStorage.getItem("nombreParticipante"),
+                marcador: localStorage.getItem("marcadorAsignado")
+            };
+        }
+
+        // Función para gestionar la participación
+        function participar() {
+            let nombre = document.getElementById("nombre").value.trim();
+            if (nombre === "") {
+                alert("Por favor ingresa tu nombre antes de participar.");
+                return;
+            }
+
+            let datosGuardados = obtenerDatos();
+            if (datosGuardados.marcador) {
+                alert("Ya has participado. Tu marcador es: " + datosGuardados.marcador);
+                return;
+            }
+
+            let marcador = generarMarcador();
+            guardarDatos(nombre, marcador);
+
+            document.getElementById("marcador").textContent = marcador;
+            document.getElementById("marcador").classList.remove("hidden");
+            document.getElementById("mensaje").classList.remove("hidden");
+            document.getElementById("participarBtn").disabled = true;
+        }
+
+        // Verificar si hay datos guardados al cargar la página
+        window.onload = function() {
+            let datos = obtenerDatos();
+            if (datos.marcador) {
+                document.getElementById("marcador").textContent = datos.marcador;
+                document.getElementById("marcador").classList.remove("hidden");
+                document.getElementById("mensaje").classList.remove("hidden");
+                document.getElementById("participarBtn").disabled = true;
+                document.getElementById("nombre").value = datos.nombre;
+                document.getElementById("nombre").disabled = true;
+            }
+        };
+    </script>
+</body>
+</html>
 
