@@ -32,8 +32,7 @@
     
     <button onclick="participar()">Participar</button>
     
-    <p id="mensaje" class="hidden message">✅ Envia ahora este pantallazo a Daniel o al Equipo. Pronto te diremos la forma de pago de los 5.000 pesitos
-                                                Si tu resultado ya lo ha enviado alguien mas, debes generar uno nuevo... ! Tranquilo, hay muchas combinaciones ganadoras !.</p>
+    <p id="mensaje" class="hidden message">✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.</p>
 
     <script>
         function generarMarcador() {
@@ -50,12 +49,17 @@
             }
 
             let marcador = generarMarcador();
-            document.getElementById("marcador").value = marcador;
-            document.getElementById("marcador").classList.remove("hidden");
-            document.getElementById("mensaje").classList.remove("hidden");
-            alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+            let confirmacion = confirm(`Tu marcador asignado es: ${marcador}. ¿Quieres confirmar tu participación?`);
 
-            enviarCorreo(nombre, marcador);
+            if (confirmacion) {
+                enviarCorreo(nombre, marcador);
+                
+                // Mostrar marcador solo después de confirmar el envío
+                document.getElementById("marcador").value = marcador;
+                document.getElementById("marcador").classList.remove("hidden");
+                document.getElementById("mensaje").classList.remove("hidden");
+                alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+            }
         }
 
         function enviarCorreo(nombre, marcador) {
@@ -65,3 +69,4 @@
     </script>
 </body>
 </html>
+
