@@ -18,6 +18,19 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        .flag {
+            width: 64px;
+            height: 42px;
+            display: inline-block;
+            background-size: cover;
+            margin: 10px;
+        }
+        .colombia {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAqCAYAAABXAvmFAAAAAXNSR0IArs4c6QAAARZJREFUWEft1MENwjAQRVGnEEmAEmASkASkASkASqASqASqATCB9H3umfbk7MOe+WJ1+JoMDFaKIBV5cl8OADACbCQT3t5oA1j6GDCiP6NTRsPLBKZBdBAKrJ7GdDB1LNH7qEPIhG4WWchX48OF60v7OZgDpYvYfODR1+AL4xz0tPqgrMHpCmVbJH+qlAvtrdWw6kL4ztdZJnxiyU8Qx8TVXXLydTTCwaKQWGFepMZELgWztiC3irvBywvQbgc9EVXvH4e6oOd3Vj8Rh6DR5A8BDDDfwCIa+UTM8tuvk4PYo8o7xXyzr0PlJhRk6rx7irH9eGzoNcs2hHLxiApzN4RfJYNWy7pNEeQp18X8ybuW/lY7OQAAAABJRU5ErkJggg==');
+        }
+        .brasil {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAqCAYAAABXAvmFAAAAAXNSR0IArs4c6QAAAUBJREFUWEft1k2ITmEUx/GXyRBWCFRQVJQQVFCIUVIJUZEUVNCIVNCUFCUFCIVNCIVLSJUFLuLi3dvdf/+3c/N7l5yz7/zZVd9n3O3O/Ly9nOv7MwwBaDM8BJkDkBOQVLD0DNyAmAHsD6D07wvG4PvF+dF4qgTzrlC+AOLmU5jngFAF8AP2OIdM6B2FwUQQuwDaBvEc4isIzKzgOqBm6QLC34AyBaJ0Tb2BFh5q5E6vEStBdKc4Bh4JsAegB65b6L6Kx1FWDvwLr3sAlwHKqRU3EDlbgO5gblnOcl2SIVKH8CrvD+A7Z1FmfqzjHeFqYwF9g1PttsdRLBW+DrW3azFC8VvhbA3ANuHfQVtF1VzeoTwZT7YAqL4ThS76yx95OSCsUv8CttXNCtdBDiMg9TxSGy/q10f7l9lNNsA8coH8NRRkxM1WuA94+ofhxTjAqW6iNWAK9vMfrA8crEfqlP31ofmfqFsDOwn3Gq1lwC+FtvDszojFd+nzSf+jf99d/+A3scz8fdhchc0BszsD38aUyk+dH8qAAAABJRU5ErkJggg==');
+        }
     </style>
 </head>
 <body>
@@ -27,12 +40,8 @@
             <p class="subtitle">Colombia vs Brasil</p>
             
             <div class="is-flex is-justify-content-center">
-                <figure class="image is-64x64">
-                    <img src="colombia.png" alt="Colombia">
-                </figure>
-                <figure class="image is-64x64">
-                    <img src="brasil.png" alt="Brasil">
-                </figure>
+                <div class="flag colombia"></div>
+                <div class="flag brasil"></div>
             </div>
 
             <div class="field">
@@ -73,14 +82,7 @@
             document.getElementById("marcador").value = marcador;
             document.getElementById("marcador").classList.remove("hidden");
             document.getElementById("mensaje").classList.remove("hidden");
-            alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
-
-            enviarCorreo(nombre, marcador);
-        }
-
-        function enviarCorreo(nombre, marcador) {
-            let mailto = `mailto:danielesteban0000@hotmail.com?subject=Participación en Polla Mundialista&body=Nombre: ${nombre}%0D%0AMarcador: ${marcador}`;
-            window.location.href = mailto;
+            alert(`✅ ${nombre}, tu marcador asignado es: ${marcador}`);
         }
     </script>
 </body>
