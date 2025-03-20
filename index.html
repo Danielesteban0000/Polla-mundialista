@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polla Mundialista</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <style>
         body {
             text-align: center;
@@ -18,50 +18,36 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .flag {
-            width: 64px;
-            height: 42px;
-            display: inline-block;
-            background-size: cover;
-            background-position: center;
-            margin: 10px;
-        }
-        .colombia {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAqCAYAAABXAvmFAAAAAXNSR0IArs4c6QAAARZJREFUWEft1MENwjAQRVGnEEmAEmASkASkASkASqASqASqATCB9H3umfbk7MOe+WJ1+JoMDFaKIBV5cl8OADACbCQT3t5oA1j6GDCiP6NTRsPLBKZBdBAKrJ7GdDB1LNH7qEPIhG4WWchX48OF60v7OZgDpYvYfODR1+AL4xz0tPqgrMHpCmVbJH+qlAvtrdWw6kL4ztdZJnxiyU8Qx8TVXXLydTTCwaKQWGFepMZELgWztiC3irvBywvQbgc9EVXvH4e6oOd3Vj8Rh6DR5A8BDDDfwCIa+UTM8tuvk4PYo8o7xXyzr0PlJhRk6rx7irH9eGzoNcs2hHLxiApzN4RfJYNWy7pNEeQp18X8ybuW/lY7OQAAAABJRU5ErkJggg==');
-        }
-        .brasil {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAqCAYAAABXAvmFAAAAAXNSR0IArs4c6QAAAUBJREFUWEft1k2ITmEUx/GXyRBWCFRQVJQQVFCIUVIJUZEUVNCIVNCUFCUFCIVNCIVLSJUFLuLi3dvdf/+3c/N7l5yz7/zZVd9n3O3O/Ly9nOv7MwwBaDM8BJkDkBOQVLD0DNyAmAHsD6D07wvG4PvF+dF4qgTzrlC+AOLmU5jngFAF8AP2OIdM6B2FwUQQuwDaBvEc4isIzKzgOqBm6QLC34AyBaJ0Tb2BFh5q5E6vEStBdKc4Bh4JsAegB65b6L6Kx1FWDvwLr3sAlwHKqRU3EDlbgO5gblnOcl2SIVKH8CrvD+A7Z1FmfqzjHeFqYwF9g1PttsdRLBW+DrW3azFC8VvhbA3ANuHfQVtF1VzeoTwZT7YAqL4ThS76yx95OSCsUv8CttXNCtdBDiMg9TxSGy/q10f7l9lNNsA8coH8NRRkxM1WuA94+ofhxTjAqW6iNWAK9vMfrA8crEfqlP31ofmfqFsDOwn3Gq1lwC+FtvDszojFd+nzSf+jf99d/+A3scz8fdhchc0BszsD38aUyk+dH8qAAAABJRU5ErkJggg==');
-        }
     </style>
 </head>
 <body>
     <section class="section">
         <div class="container">
             <h2 class="title is-3">⚽ Polla Mundialista ⚽</h2>
-            <p class="subtitle">Colombia vs Brasil</p>
+            <h3 class="subtitle is-4">Colombia vs Brasil</h3>
             
             <div class="is-flex is-justify-content-center">
-                <div class="flag colombia"></div>
-                <div class="flag brasil"></div>
+                <figure class="image is-96x96">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" alt="Bandera de Colombia">
+                </figure>
+                <figure class="image is-96x96 ml-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Bandera de Brasil">
+                </figure>
             </div>
 
-            <div class="field">
+            <div class="box mt-5">
                 <label class="label">Ingresa tu nombre</label>
-                <div class="control">
-                    <input class="input" type="text" id="nombre" placeholder="Tu nombre aquí">
-                </div>
+                <input type="text" id="nombre" class="input" placeholder="Tu nombre aquí">
+
+                <label class="label mt-3">Tu marcador asignado</label>
+                <p id="marcador" class="is-size-4 has-text-weight-bold hidden"></p>
+
+                <button class="button is-success mt-4" onclick="participar()">Participar</button>
             </div>
 
-            <div class="field">
-                <label class="label">Tu marcador asignado</label>
-                <div class="control">
-                    <input class="input is-static hidden" type="text" id="marcador" readonly>
-                </div>
-            </div>
-
-            <button class="button is-primary" onclick="participar()">Participar</button>
-
-            <p id="mensaje" class="hidden message">✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.</p>
+            <p id="mensaje" class="hidden notification is-success mt-3">
+                ✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.
+            </p>
         </div>
     </section>
 
@@ -80,10 +66,9 @@
             }
 
             let marcador = generarMarcador();
-            document.getElementById("marcador").value = marcador;
+            document.getElementById("marcador").textContent = marcador;
             document.getElementById("marcador").classList.remove("hidden");
             document.getElementById("mensaje").classList.remove("hidden");
-            alert(`✅ ${nombre}, tu marcador asignado es: ${marcador}`);
         }
     </script>
 </body>
