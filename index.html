@@ -25,6 +25,19 @@
         button:hover {
             background-color: #13a682;
         }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        #mensaje {
+            color: green;
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -36,29 +49,43 @@
     
     <p><b>Ingresa tu nombre</b></p>
     <input type="text" id="nombre" placeholder="Escribe tu nombre aquí">
-    
+
     <p><b>Tu marcador asignado</b></p>
     <input type="text" id="marcador" readonly>
-    
+
     <button id="participarBtn">Participar</button>
+
+    <p id="mensaje"></p>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             emailjs.init("TU_PUBLIC_KEY"); // Reemplaza con tu Public Key de EmailJS
 
-            document.getElementById("participarBtn").addEventListener("click", function () {
-                let nombre = document.getElementById("nombre").value;
-                let marcador = generarMarcadorAleatorio();
-                
-                if (nombre.trim() === "") {
+            let nombreInput = document.getElementById("nombre");
+            let marcadorInput = document.getElementById("marcador");
+            let mensaje = document.getElementById("mensaje");
+            let botonParticipar = document.getElementById("participarBtn");
+
+            // Cuando se escribe el nombre, genera el marcador automáticamente
+            nombreInput.addEventListener("input", function () {
+                if (nombreInput.value.trim() !== "") {
+                    marcadorInput.value = generarMarcadorAleatorio();
+                } else {
+                    marcadorInput.value = "";
+                }
+            });
+
+            botonParticipar.addEventListener("click", function () {
+                let nombre = nombreInput.value.trim();
+                let marcador = marcadorInput.value;
+
+                if (nombre === "") {
                     alert("❌ Por favor ingresa tu nombre.");
                     return;
                 }
 
-                document.getElementById("marcador").value = marcador;
-                
-                // Mostrar alerta emergente
-                alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+                // Mostrar mensaje de confirmación
+                mensaje.innerText = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
 
                 // Enviar correo con los datos
                 enviarCorreo(nombre, marcador);
@@ -77,7 +104,8 @@
 
             let parametros = {
                 nombre: nombre,
-                marcador: marcador
+                marcador: marcador,
+                correo: "danielesteban0000@hotmail.com"
             };
 
             emailjs.send(serviceID, templateID, parametros)
@@ -90,3 +118,4 @@
     </script>
 </body>
 </html>
+
