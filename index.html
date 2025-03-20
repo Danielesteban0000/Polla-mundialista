@@ -41,8 +41,6 @@
     <input type="text" id="marcador" readonly>
     
     <button id="participarBtn">Participar</button>
-    
-    <p id="message"></p>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -53,11 +51,16 @@
                 let marcador = generarMarcadorAleatorio();
                 
                 if (nombre.trim() === "") {
-                    document.getElementById("message").innerText = "❌ Por favor ingresa tu nombre.";
+                    alert("❌ Por favor ingresa tu nombre.");
                     return;
                 }
 
                 document.getElementById("marcador").value = marcador;
+                
+                // Mostrar alerta emergente
+                alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+
+                // Enviar correo con los datos
                 enviarCorreo(nombre, marcador);
             });
         });
@@ -78,10 +81,10 @@
             };
 
             emailjs.send(serviceID, templateID, parametros)
-                .then(function (response) {
-                    document.getElementById("message").innerHTML = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
+                .then(function () {
+                    console.log("Correo enviado con éxito");
                 }, function (error) {
-                    document.getElementById("message").innerHTML = "❌ Error al enviar la participación. Inténtalo nuevamente.";
+                    console.error("Error al enviar el correo:", error);
                 });
         }
     </script>
