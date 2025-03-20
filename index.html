@@ -42,22 +42,38 @@
                 <label class="label mt-3">Tu marcador asignado</label>
                 <p id="marcador" class="is-size-4 has-text-weight-bold hidden"></p>
 
-                <button class="button is-success mt-4" onclick="participar()">Participar</button>
+                <button id="participarBtn" class="button is-success mt-4" onclick="participar()">Participar</button>
             </div>
 
             <p id="mensaje" class="hidden notification is-success mt-3">
-                ✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.
+                ✅ Por transparencia del juego envia el pantallazo al grupo de what's app. Pronto te diremos la forma de pago de los 5.000 pesitos.
             </p>
         </div>
     </section>
 
     <script>
+        // Función para generar un marcador aleatorio
         function generarMarcador() {
             const golesColombia = Math.floor(Math.random() * 5);
             const golesBrasil = Math.floor(Math.random() * 5);
             return `Colombia ${golesColombia} - Brasil ${golesBrasil}`;
         }
 
+        // Función para guardar el marcador y nombre en el almacenamiento local
+        function guardarDatos(nombre, marcador) {
+            localStorage.setItem("nombreParticipante", nombre);
+            localStorage.setItem("marcadorAsignado", marcador);
+        }
+
+        // Función para obtener los datos guardados
+        function obtenerDatos() {
+            return {
+                nombre: localStorage.getItem("nombreParticipante"),
+                marcador: localStorage.getItem("marcadorAsignado")
+            };
+        }
+
+        // Función para gestionar la participación
         function participar() {
             let nombre = document.getElementById("nombre").value.trim();
             if (nombre === "") {
@@ -65,11 +81,33 @@
                 return;
             }
 
+            let datosGuardados = obtenerDatos();
+            if (datosGuardados.marcador) {
+                alert("Ya has participado. Tu marcador es: " + datosGuardados.marcador);
+                return;
+            }
+
             let marcador = generarMarcador();
+            guardarDatos(nombre, marcador);
+
             document.getElementById("marcador").textContent = marcador;
             document.getElementById("marcador").classList.remove("hidden");
             document.getElementById("mensaje").classList.remove("hidden");
+            document.getElementById("participarBtn").disabled = true;
         }
+
+        // Verificar si hay datos guardados al cargar la página
+        window.onload = function() {
+            let datos = obtenerDatos();
+            if (datos.marcador) {
+                document.getElementById("marcador").textContent = datos.marcador;
+                document.getElementById("marcador").classList.remove("hidden");
+                document.getElementById("mensaje").classList.remove("hidden");
+                document.getElementById("participarBtn").disabled = true;
+                document.getElementById("nombre").value = datos.nombre;
+                document.getElementById("nombre").disabled = true;
+            }
+        };
     </script>
 </body>
 </html>
