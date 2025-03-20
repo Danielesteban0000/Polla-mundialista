@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polla Mundialista</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
         .hidden {
             display: none;
         }
-        .message {
-            color: green;
-            font-weight: bold;
-            margin-top: 10px;
-        }
     </style>
 </head>
-<body>
-    <h2>⚽ Polla Mundialista ⚽</h2>
-    <p>Colombia vs Brasil</p>
-    <img src="colombia.png" width="50"> <img src="brasil.png" width="50">
-    
-    <p><strong>Ingresa tu nombre</strong></p>
-    <input type="text" id="nombre" placeholder="Tu nombre aquí">
-    
-    <p><strong>Tu marcador asignado</strong></p>
-    <input type="text" id="marcador" class="hidden" readonly>
-    
-    <button onclick="participar()">Participar</button>
-    
-    <p id="mensaje" class="hidden message">✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.</p>
+<body class="has-text-centered">
+
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-3">⚽ Polla Mundialista ⚽</h2>
+            <p class="subtitle is-5">Colombia vs Brasil</p>
+
+            <figure class="image is-128x128 is-inline-block">
+                <img src="./colombia.png" alt="Colombia">
+            </figure>
+            <figure class="image is-128x128 is-inline-block">
+                <img src="./brasil.png" alt="Brasil">
+            </figure>
+
+            <div class="field">
+                <label class="label">Ingresa tu nombre</label>
+                <div class="control">
+                    <input class="input" type="text" id="nombre" placeholder="Tu nombre aquí">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Tu marcador asignado</label>
+                <div class="control">
+                    <input class="input is-static hidden" id="marcador" readonly>
+                </div>
+            </div>
+
+            <button class="button is-primary" onclick="participar()">Participar</button>
+
+            <p id="mensaje" class="hidden has-text-success mt-4">✅ Ya estás participando. Pronto te diremos la forma de pago.</p>
+        </div>
+    </section>
 
     <script>
         function generarMarcador() {
@@ -53,12 +64,10 @@
 
             if (confirmacion) {
                 enviarCorreo(nombre, marcador);
-                
-                // Mostrar marcador solo después de confirmar el envío
                 document.getElementById("marcador").value = marcador;
                 document.getElementById("marcador").classList.remove("hidden");
                 document.getElementById("mensaje").classList.remove("hidden");
-                alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+                alert("✅ Ya estás participando. Pronto te diremos la forma de pago.");
             }
         }
 
@@ -67,6 +76,6 @@
             window.location.href = mailto;
         }
     </script>
+
 </body>
 </html>
-
