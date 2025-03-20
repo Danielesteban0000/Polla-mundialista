@@ -3,81 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polla Mundialista - Colombia vs Brasil</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <title>Polla Mundialista</title>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
     <style>
         body {
-            background: url('https://source.unsplash.com/1600x900/?soccer,stadium') no-repeat center center fixed;
-            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
         }
-        .container {
-            max-width: 500px;
-            margin-top: 50px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #16c79a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .flag {
-            width: 50px;
-            height: auto;
+
+        button:hover {
+            background-color: #13a682;
         }
     </style>
 </head>
 <body>
-    <div class="container has-text-centered">
-        <h1 class="title">⚽ Polla Mundialista ⚽</h1>
-        <h2 class="subtitle">Colombia vs Brasil</h2>
-        <div class="flags">
-            <img src="https://flagcdn.com/w40/co.png" class="flag"> VS <img src="https://flagcdn.com/w40/br.png" class="flag">
-        </div>
-        <form id="betForm">
-            <div class="field">
-                <label class="label">Ingresa tu nombre</label>
-                <div class="control">
-                    <input class="input" type="text" id="name" placeholder="Tu nombre" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Tu marcador asignado</label>
-                <div class="control">
-                    <input class="input" type="text" id="result" readonly>
-                </div>
-            </div>
-            <button type="submit" class="button is-primary is-fullwidth">Participar</button>
-        </form>
-        <p id="message" class="mt-4 has-text-success"></p>
-    </div>
+    <h2>⚽ Polla Mundialista ⚽</h2>
+    <p>Colombia vs Brasil</p>
     
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" width="50">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="50">
+    
+    <p><b>Ingresa tu nombre</b></p>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre aquí">
+    
+    <p><b>Tu marcador asignado</b></p>
+    <input type="text" id="marcador" readonly>
+    
+    <button id="participarBtn">Participar</button>
+    
+    <p id="message"></p>
+
     <script>
-        const results = [];
-        for (let i = 0; i <= 5; i++) {
-            for (let j = 0; j <= 5; j++) {
-                results.push(`Colombia ${i} - Brasil ${j}`);
-            }
-        }
-        results.sort(() => Math.random() - 0.5);
-        const assignedResults = new Set();
-        
-        document.getElementById('betForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            if (!name) return;
-            
-            let assignedResult;
-            do {
-                assignedResult = results.pop();
-            } while (assignedResults.has(assignedResult));
-            assignedResults.add(assignedResult);
-            document.getElementById('result').value = assignedResult;
-            
-            fetch('https://formspree.io/f/mnqlkzrz', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, result: assignedResult })
+        document.addEventListener("DOMContentLoaded", function () {
+            emailjs.init("TU_PUBLIC_KEY"); // Reemplaza con tu Public Key de EmailJS
+
+            document.getElementById("participarBtn").addEventListener("click", function () {
+                let nombre = document.getElementById("nombre").value;
+                let marcador = generarMarcadorAleatorio();
+                
+                if (nombre.trim() === "") {
+                    document.getElementById("message").innerText = "❌ Por favor ingresa tu nombre.";
+                    return;
+                }
+
+                document.getElementById("marcador").value = marcador;
+                enviarCorreo(nombre, marcador);
             });
-            
-            document.getElementById('message').innerText = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
         });
+
+        function generarMarcadorAleatorio() {
+            let golesColombia = Math.floor(Math.random() * 6);
+            let golesBrasil = Math.floor(Math.random() * 6);
+            return `Colombia ${golesColombia} - Brasil ${golesBrasil}`;
+        }
+
+        function enviarCorreo(nombre, marcador) {
+            let serviceID = "TU_SERVICE_ID"; // Reemplaza con tu Service ID de EmailJS
+            let templateID = "TU_TEMPLATE_ID"; // Reemplaza con tu Template ID de EmailJS
+
+            let parametros = {
+                nombre: nombre,
+                marcador: marcador
+            };
+
+            emailjs.send(serviceID, templateID, parametros)
+                .then(function (response) {
+                    document.getElementById("message").innerHTML = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
+                }, function (error) {
+                    document.getElementById("message").innerHTML = "❌ Error al enviar la participación. Inténtalo nuevamente.";
+                });
+        }
     </script>
 </body>
 </html>
