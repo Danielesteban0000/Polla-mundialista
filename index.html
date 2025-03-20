@@ -4,118 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polla Mundialista</title>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
         }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #16c79a;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
+        .hidden {
+            display: none;
         }
-
-        button:hover {
-            background-color: #13a682;
-        }
-
-        input {
-            padding: 10px;
-            width: 80%;
-            margin: 10px;
-            font-size: 16px;
-        }
-
-        #mensaje {
+        .message {
             color: green;
-            margin-top: 15px;
             font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <h2>⚽ Polla Mundialista ⚽</h2>
     <p>Colombia vs Brasil</p>
+    <img src="colombia.png" width="50"> <img src="brasil.png" width="50">
     
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" width="50">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="50">
+    <p><strong>Ingresa tu nombre</strong></p>
+    <input type="text" id="nombre" placeholder="Tu nombre aquí">
     
-    <p><b>Ingresa tu nombre</b></p>
-    <input type="text" id="nombre" placeholder="Escribe tu nombre aquí">
-
-    <p><b>Tu marcador asignado</b></p>
-    <input type="text" id="marcador" readonly>
-
-    <button id="participarBtn">Participar</button>
-
-    <p id="mensaje"></p>
+    <p><strong>Tu marcador asignado</strong></p>
+    <input type="text" id="marcador" class="hidden" readonly>
+    
+    <button onclick="participar()">Participar</button>
+    
+    <p id="mensaje" class="hidden message">✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.</p>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            emailjs.init("TU_PUBLIC_KEY"); // Reemplaza con tu Public Key de EmailJS
-
-            let nombreInput = document.getElementById("nombre");
-            let marcadorInput = document.getElementById("marcador");
-            let mensaje = document.getElementById("mensaje");
-            let botonParticipar = document.getElementById("participarBtn");
-
-            // Cuando se escribe el nombre, genera el marcador automáticamente
-            nombreInput.addEventListener("input", function () {
-                if (nombreInput.value.trim() !== "") {
-                    marcadorInput.value = generarMarcadorAleatorio();
-                } else {
-                    marcadorInput.value = "";
-                }
-            });
-
-            botonParticipar.addEventListener("click", function () {
-                let nombre = nombreInput.value.trim();
-                let marcador = marcadorInput.value;
-
-                if (nombre === "") {
-                    alert("❌ Por favor ingresa tu nombre.");
-                    return;
-                }
-
-                // Mostrar mensaje de confirmación
-                mensaje.innerText = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
-
-                // Enviar correo con los datos
-                enviarCorreo(nombre, marcador);
-            });
-        });
-
-        function generarMarcadorAleatorio() {
-            let golesColombia = Math.floor(Math.random() * 6);
-            let golesBrasil = Math.floor(Math.random() * 6);
+        function generarMarcador() {
+            const golesColombia = Math.floor(Math.random() * 5);
+            const golesBrasil = Math.floor(Math.random() * 5);
             return `Colombia ${golesColombia} - Brasil ${golesBrasil}`;
         }
 
+        function participar() {
+            let nombre = document.getElementById("nombre").value.trim();
+            if (nombre === "") {
+                alert("Por favor ingresa tu nombre antes de participar.");
+                return;
+            }
+
+            let marcador = generarMarcador();
+            document.getElementById("marcador").value = marcador;
+            document.getElementById("marcador").classList.remove("hidden");
+            document.getElementById("mensaje").classList.remove("hidden");
+            alert("✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.");
+
+            enviarCorreo(nombre, marcador);
+        }
+
         function enviarCorreo(nombre, marcador) {
-            let serviceID = "TU_SERVICE_ID"; // Reemplaza con tu Service ID de EmailJS
-            let templateID = "TU_TEMPLATE_ID"; // Reemplaza con tu Template ID de EmailJS
-
-            let parametros = {
-                nombre: nombre,
-                marcador: marcador,
-                correo: "danielesteban0000@hotmail.com"
-            };
-
-            emailjs.send(serviceID, templateID, parametros)
-                .then(function () {
-                    console.log("Correo enviado con éxito");
-                }, function (error) {
-                    console.error("Error al enviar el correo:", error);
-                });
+            let mailto = `mailto:danielesteban0000@hotmail.com?subject=Participación en Polla Mundialista&body=Nombre: ${nombre}%0D%0AMarcador: ${marcador}`;
+            window.location.href = mailto;
         }
     </script>
 </body>
 </html>
-
