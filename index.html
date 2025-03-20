@@ -52,20 +52,21 @@
     </section>
 
     <script>
-        // Función para generar un marcador aleatorio
         function generarMarcador() {
             const golesColombia = Math.floor(Math.random() * 5);
             const golesBrasil = Math.floor(Math.random() * 5);
             return `Colombia ${golesColombia} - Brasil ${golesBrasil}`;
         }
 
-        // Función para guardar el marcador y nombre en el almacenamiento local
         function guardarDatos(nombre, marcador) {
             localStorage.setItem("nombreParticipante", nombre);
             localStorage.setItem("marcadorAsignado", marcador);
+
+            let participantes = JSON.parse(localStorage.getItem("participantes")) || [];
+            participantes.push({ nombre, marcador });
+            localStorage.setItem("participantes", JSON.stringify(participantes));
         }
 
-        // Función para obtener los datos guardados
         function obtenerDatos() {
             return {
                 nombre: localStorage.getItem("nombreParticipante"),
@@ -73,7 +74,6 @@
             };
         }
 
-        // Función para gestionar la participación
         function participar() {
             let nombre = document.getElementById("nombre").value.trim();
             if (nombre === "") {
@@ -94,9 +94,10 @@
             document.getElementById("marcador").classList.remove("hidden");
             document.getElementById("mensaje").classList.remove("hidden");
             document.getElementById("participarBtn").disabled = true;
+
+            console.log("Lista de participantes actualizada:", JSON.parse(localStorage.getItem("participantes")));
         }
 
-        // Verificar si hay datos guardados al cargar la página
         window.onload = function() {
             let datos = obtenerDatos();
             if (datos.marcador) {
@@ -107,8 +108,9 @@
                 document.getElementById("nombre").value = datos.nombre;
                 document.getElementById("nombre").disabled = true;
             }
+
+            console.log("Lista de participantes al cargar la página:", JSON.parse(localStorage.getItem("participantes")) || []);
         };
     </script>
 </body>
 </html>
-
