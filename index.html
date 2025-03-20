@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polla Mundialista - Colombia vs Brasil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1600x900/?soccer,stadium') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .flag {
+            width: 50px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container has-text-centered">
+        <h1 class="title">⚽ Polla Mundialista ⚽</h1>
+        <h2 class="subtitle">Colombia vs Brasil</h2>
+        <div class="flags">
+            <img src="https://flagcdn.com/w40/co.png" class="flag"> VS <img src="https://flagcdn.com/w40/br.png" class="flag">
+        </div>
+        <form id="betForm">
+            <div class="field">
+                <label class="label">Ingresa tu nombre</label>
+                <div class="control">
+                    <input class="input" type="text" id="name" placeholder="Tu nombre" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Tu marcador asignado</label>
+                <div class="control">
+                    <input class="input" type="text" id="result" readonly>
+                </div>
+            </div>
+            <button type="submit" class="button is-primary is-fullwidth">Participar</button>
+        </form>
+        <p id="message" class="mt-4 has-text-success"></p>
+    </div>
+    
+    <script>
+        const results = [];
+        for (let i = 0; i <= 5; i++) {
+            for (let j = 0; j <= 5; j++) {
+                results.push(`Colombia ${i} - Brasil ${j}`);
+            }
+        }
+        results.sort(() => Math.random() - 0.5);
+        const assignedResults = new Set();
+        
+        document.getElementById('betForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            if (!name) return;
+            
+            let assignedResult;
+            do {
+                assignedResult = results.pop();
+            } while (assignedResults.has(assignedResult));
+            assignedResults.add(assignedResult);
+            document.getElementById('result').value = assignedResult;
+            
+            fetch('https://formspree.io/f/mnqlkzrz', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, result: assignedResult })
+            });
+            
+            document.getElementById('message').innerText = "✅ Ya estás participando. Pronto te diremos la forma de pago de los 5.000 pesitos.";
+        });
+    </script>
+</body>
+</html>
